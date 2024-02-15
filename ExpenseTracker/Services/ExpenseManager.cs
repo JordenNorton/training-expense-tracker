@@ -42,13 +42,17 @@ public class ExpenseManager
         foreach (var expense in searchResults)
         {
             Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
-
         }
     }
 
-    public void SearchExpenseCategory()
+    public void SearchExpenseCategory(string searchTerm)
     {
-        
+        var searchResults = _expenses.Where(expense => expense.Category != null && expense.Category.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        foreach (var expense in searchResults)
+        {
+            Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
+        }
     }
 
 }
