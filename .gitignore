@@ -5,6 +5,7 @@
 
 # Custom entries
 plan.txt
+expenses.json
 
 # dotenv files
 .env
