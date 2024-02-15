@@ -11,6 +11,11 @@ public class ExpenseManager
         _expenses.Add(expense);
     }
 
+    public void RemoveExpense(int expenseId)
+    {
+        _expenses.RemoveAll(expense => expense.Id == expenseId);
+    }
+
     public void ListExpenses()
     {
         foreach (var expense in _expenses)
@@ -18,4 +23,32 @@ public class ExpenseManager
             Console.WriteLine($"ID: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
         }
     }
+
+    public void SearchExpensesId(int searchTerm)
+    {
+        var searchResults = _expenses.Where(expense => expense.Id.Equals(searchTerm)).ToList();
+
+        if (searchResults.Any())
+            foreach (var expense in searchResults)
+            {
+                Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
+            }
+    }
+
+    public void SearchExpensesDate(string searchTerm)
+    {
+        var searchResults = _expenses.Where(expense => expense.Date != null && expense.Date.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        foreach (var expense in searchResults)
+        {
+            Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
+
+        }
+    }
+
+    public void SearchExpenseCategory()
+    {
+        
+    }
+
 }
