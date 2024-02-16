@@ -53,7 +53,7 @@ public class ExpenseManager
         }
     }
 
-    public void SearchExpensesId(int searchTerm)
+    public void SearchExpenseId(int searchTerm)
     {
         var searchResults = _expenses.Where(expense => expense.Id.Equals(searchTerm)).ToList();
 
@@ -64,9 +64,9 @@ public class ExpenseManager
             }
     }
 
-    public void SearchExpensesDate(string searchTerm)
+    public void SearchExpenseDate(string? searchTerm)
     {
-        var searchResults = _expenses.Where(expense => expense.Date != null && expense.Date.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        var searchResults = _expenses.Where(expense => searchTerm != null && expense.Date != null && expense.Date.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
 
         foreach (var expense in searchResults)
         {
@@ -74,9 +74,9 @@ public class ExpenseManager
         }
     }
 
-    public void SearchExpenseCategory(string searchTerm)
+    public void SearchExpenseCategory(string? searchTerm)
     {
-        var searchResults = _expenses.Where(expense => expense.Category != null && expense.Category.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        var searchResults = _expenses.Where(expense => searchTerm != null && expense.Category != null && expense.Category.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
 
         foreach (var expense in searchResults)
         {
