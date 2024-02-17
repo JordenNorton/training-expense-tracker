@@ -1,5 +1,6 @@
 using System.Text.Json;
 using ExpenseTracker.Models;
+using ExpenseTracker.Utilities;
 
 namespace ExpenseTracker.Services;
 
@@ -49,7 +50,7 @@ public class ExpenseManager
         
         foreach (var expense in _expenses)
         {
-            Console.WriteLine($"ID: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
+            Console.WriteLine($"ID: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date.ToCustomShortDateString()}");
         }
     }
 
@@ -60,17 +61,17 @@ public class ExpenseManager
         if (searchResults.Any())
             foreach (var expense in searchResults)
             {
-                Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
+                Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date.ToCustomShortDateString()}");
             }
     }
 
-    public void SearchExpenseDate(string? searchTerm)
+    public void SearchExpenseDate(DateTime searchTerm)
     {
-        var searchResults = _expenses.Where(expense => searchTerm != null && expense.Date != null && expense.Date.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        var searchResults = _expenses.Where(expense => expense.Date == searchTerm.Date).ToList();
 
         foreach (var expense in searchResults)
         {
-            Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
+            Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date.ToCustomShortDateString()}");
         }
     }
 
@@ -80,7 +81,7 @@ public class ExpenseManager
 
         foreach (var expense in searchResults)
         {
-            Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date}");
+            Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date.ToCustomShortDateString()}");
         }
     }
 
