@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using ExpenseTracker.Models;
 using ExpenseTracker.Services;
 
@@ -58,7 +59,7 @@ while (continueRunning)
         Console.WriteLine("Enter Category");
         string? category = Console.ReadLine();
         Console.WriteLine("Enter Date");
-        string? date = Console.ReadLine();
+        DateTime date = Convert.ToDateTime(Console.ReadLine());
 
         expenseManager.AddExpense(new Expense { Id = id, Amount = amount, Category = category, Date = date });
         Console.WriteLine("Expense added successfully");
@@ -97,13 +98,30 @@ while (continueRunning)
         Console.WriteLine("\nPress enter to exit");
         Console.ReadLine();
     }
-
+    
     void SearchExpenseDate()
     {
-        Console.WriteLine("Enter expense date:");
-        string? date = Console.ReadLine();
-        expenseManager?.SearchExpenseDate(date);
+        Console.WriteLine("Enter expense date (dd/MM/yyyy):");
+        string? dateString = Console.ReadLine();
+        
+        DateTime date;
+
+        bool success = DateTime.TryParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture,
+            DateTimeStyles.None, out date);
+
+        if (success)
+        {
+            // If parsing is successful, search for expenses on that date
+            expenseManager?.SearchExpenseDate(date);
+        }
+        else
+        {
+            // If parsing fails, inform the user
+            Console.WriteLine("Invalid date format. Please use the format dd/MM/yyyy.");
+        }
+
         Console.WriteLine("\nPress enter to exit");
         Console.ReadLine();
     }
+
 }
