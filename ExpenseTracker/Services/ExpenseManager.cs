@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using ExpenseTracker.Models;
 using ExpenseTracker.Utilities;
 
@@ -87,12 +88,20 @@ public class ExpenseManager
 
     public void SummariseExpense(DateTime startDate, DateTime endDate)
     {
-        var searchResults = _expenses.Where(expense => expense.Date >= startDate && expense.Date <= endDate).ToList();
+        var searchResults = _expenses.Where(expense => expense.Date >= startDate && expense.Date <= endDate)
+            .GroupBy(expense => expense.Category);
 
-        foreach (var expense in searchResults)
+        foreach (var group in searchResults)
         {
-            Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date.ToCustomShortDateString()}");
+            float groupTotal = group.Select(expense => expense.Amount).Sum();
+            Console.WriteLine($"Category: {group.Key} | Total: £{groupTotal}");
+            
+            foreach (var expense in group)
+            {
+                Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date.ToCustomShortDateString()}");
+            }
         }
+        
     }
 
 }
