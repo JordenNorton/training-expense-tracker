@@ -85,4 +85,14 @@ public class ExpenseManager
         }
     }
 
+    public void SummariseExpense(DateTime startDate, DateTime endDate)
+    {
+        var searchResults = _expenses.Where(expense => expense.Date >= startDate && expense.Date <= endDate).ToList();
+
+        foreach (var expense in searchResults)
+        {
+            Console.WriteLine($"Id: {expense.Id}, Amount: {expense.Amount}, Category: {expense.Category}, Date: {expense.Date.ToCustomShortDateString()}");
+        }
+    }
+
 }

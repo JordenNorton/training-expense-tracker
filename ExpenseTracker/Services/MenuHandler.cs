@@ -5,6 +5,7 @@ namespace ExpenseTracker.Services;
 
 public class MenuHandler(ExpenseManager expenseManager)
 {
+    
     public void DisplayMenu()
     {
         var continueRunning = true;
@@ -12,10 +13,10 @@ public class MenuHandler(ExpenseManager expenseManager)
         {
             Console.WriteLine(
                 "What would you like to do? \n 1: Add expense \n 2: Remove expense \n 3: View all expenses \n 4: Search by ID \n" +
-                " 5: Search by Category \n 6: Search by Date \n 7: Save & Quit");
-
-            var choice = int.TryParse(Console.ReadLine(), out var result) ? result : 0;
-
+                " 5: Search by Category \n 6: Search by Date \n 7: More Options \n 8: Save & Quit");
+            
+            int choice = int.TryParse(Console.ReadLine(), out var result) ? result : 0;
+            
             switch (choice)
             {
                 case 1:
@@ -37,10 +38,33 @@ public class MenuHandler(ExpenseManager expenseManager)
                     SearchExpenseDate();
                     break;
                 case 7:
+                    DisplayExtendedMenu();
+                    break;
+                case 8:
                     continueRunning = false;
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Please select a valid option.");
+                    break;
+            }
+        }
+    }
+
+    private void DisplayExtendedMenu()
+    {
+        var continueRunning = true;
+        while (continueRunning)
+        {
+            Console.WriteLine("More Options: \n 1: Summarise expenses \n 2: Press enter to exit to main menu");
+            int choice = int.TryParse(Console.ReadLine(), out var result) ? result : 0;
+            
+            switch (choice)
+            {
+                case 1:
+                    SummariseExpenses();
+                    break;
+                default:
+                    continueRunning = false;
                     break;
             }
         }
@@ -131,6 +155,32 @@ public class MenuHandler(ExpenseManager expenseManager)
             Console.ReadLine();
         }
 
+        Console.WriteLine("\nPress enter to exit");
+        Console.ReadLine();
+    }
+
+    private void SummariseExpenses()
+    {
+        Console.WriteLine("Enter expense start date (dd/MM/yyyy):");
+        string? startDateString = Console.ReadLine();
+        Console.WriteLine("Enter expense end date (dd/MM/yyyy):");
+        string? endDateString = Console.ReadLine();
+
+        bool startParseSuccess = DateTime.TryParseExact(startDateString, "dd/MM/yyyy", CultureInfo.InvariantCulture,
+            DateTimeStyles.None, out DateTime start);
+        bool endDateSuccess = DateTime.TryParseExact(endDateString, "dd/MM/yyyy", CultureInfo.InvariantCulture,
+            DateTimeStyles.None, out DateTime end);
+
+        if (startParseSuccess && endDateSuccess)
+        {
+            expenseManager.SummariseExpense(start, end);
+        }
+        else
+        {
+            Console.WriteLine("Invalid date format. Please use format dd/MM/yyyy");
+            Console.ReadLine();
+        }
+        
         Console.WriteLine("\nPress enter to exit");
         Console.ReadLine();
     }
