@@ -55,7 +55,7 @@ public class MenuHandler(ExpenseManager expenseManager)
         var continueRunning = true;
         while (continueRunning)
         {
-            Console.WriteLine("More Options: \n 1: Summarise expenses \n 2: Press enter to exit to main menu");
+            Console.WriteLine("More Options: \n 1: Summarise expenses \n Press enter to return to the main menu");
             int choice = int.TryParse(Console.ReadLine(), out var result) ? result : 0;
             
             switch (choice)
